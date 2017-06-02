@@ -39,7 +39,12 @@ public class ContentFragment extends BaseFragment {
     public View initView() {
         View view = View.inflate(context, R.layout.fragment_content, null);
         unbinder = ButterKnife.bind(this, view);
+
+        rgContent.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
+        rgContent.check(R.id.rb_home);
         return view;
+
+
     }
 
     @Override
@@ -83,6 +88,23 @@ public class ContentFragment extends BaseFragment {
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
+        }
+    }
+
+    private class MyOnCheckedChangeListener implements RadioGroup.OnCheckedChangeListener {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            switch (checkedId) {
+                case R.id.rb_home :
+                    contentVp.setCurrentItem(0);
+                    break;
+                case R.id.rb_news :
+                    contentVp.setCurrentItem(1);
+                    break;
+                case R.id.rb_setting :
+                    contentVp.setCurrentItem(2);
+                    break;
+            }
         }
     }
 }
