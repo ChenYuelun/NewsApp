@@ -5,6 +5,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.newsapp.R;
 import com.example.newsapp.base.BaseFragment;
 
 /**
@@ -12,19 +13,14 @@ import com.example.newsapp.base.BaseFragment;
  */
 
 public class ContentFragment extends BaseFragment {
-    TextView textView;
     @Override
     public View initView() {
-        textView = new TextView(context);
-        textView.setTextColor(Color.RED);
-        textView.setTextSize(30);
-        textView.setGravity(Gravity.CENTER);
-        return textView;
+        View view = View.inflate(context, R.layout.fragment_content,null);
+        return view;
     }
 
     @Override
     public void initData() {
         super.initData();
-        textView.setText("ContentFragment");
     }
 }

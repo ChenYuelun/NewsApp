@@ -15,7 +15,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".acitivyty.MainActivity" />
+        <activity
+            android:name=".acitivyty.MainActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" />
         <activity android:name=".acitivyty.GuideActivity"></activity>
     </application>
 
