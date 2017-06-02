@@ -42,6 +42,7 @@ public class ContentFragment extends BaseFragment {
 
         rgContent.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
         rgContent.check(R.id.rb_home);
+        contentVp.addOnPageChangeListener(new MyOnPageChangeListener());
         return view;
 
 
@@ -105,6 +106,33 @@ public class ContentFragment extends BaseFragment {
                     contentVp.setCurrentItem(2);
                     break;
             }
+        }
+    }
+
+    private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            switch (position) {
+                case  0:
+                    rgContent.check(R.id.rb_home);
+                    break;
+                case  1:
+                    rgContent.check(R.id.rb_news);
+                    break;
+                case  2:
+                    rgContent.check(R.id.rb_setting);
+                    break;
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
         }
     }
 }
