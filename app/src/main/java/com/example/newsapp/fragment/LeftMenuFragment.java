@@ -3,10 +3,12 @@ package com.example.newsapp.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.hardware.Camera;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -27,6 +29,7 @@ import java.util.List;
 public class LeftMenuFragment extends BaseFragment {
     private List<NewsControlBean.DataBean> datas;
     private ListView listView;
+    private View preView;
 
     @Override
     public View initView() {
@@ -34,6 +37,18 @@ public class LeftMenuFragment extends BaseFragment {
         listView.setPadding(0, DensityUtil.dip2px(context,40),0,0);
         listView.setDivider(new ColorDrawable(Color.RED));
         listView.setDividerHeight(DensityUtil.dip2px(context,2));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(view != preView) {
+                    view.setEnabled(true);
+                    if(preView!= null) {
+                        preView.setEnabled(false);
+                    }
+                    preView = view;
+                }
+            }
+        });
         return listView;
     }
 
