@@ -30,4 +30,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.6.0'
     apt 'com.jakewharton:butterknife-compiler:8.6.0'
     compile project(':SlidingMenu_library')
+    compile 'com.zhy:okhttputils:2.6.2'
+    compile 'com.google.code.gson:gson:2.2.4'
 }
