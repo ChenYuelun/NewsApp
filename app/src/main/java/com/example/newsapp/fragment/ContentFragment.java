@@ -73,7 +73,7 @@ public class ContentFragment extends BaseFragment {
             BasePager basePager = pagers.get(position);
             View rootView = basePager.rootView;
             container.addView(rootView);
-            basePager.initData();
+//            basePager.initData();
             return rootView;
         }
 
@@ -118,9 +118,7 @@ public class ContentFragment extends BaseFragment {
 
         @Override
         public void onPageSelected(int position) {
-            switch (position) {
-
-            }
+            pagers.get(position).initData();
         }
 
         @Override

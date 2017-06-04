@@ -2,6 +2,7 @@ package com.example.newsapp.pager;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ public class NewsPager extends BasePager {
 
     @Override
     public void initData() {
+        Log.e("TAG","NewsPager,initData");
         super.initData();
 
         tv_title.setText("主页");
