@@ -16,9 +16,11 @@ import android.widget.TextView;
 
 import com.example.newsapp.R;
 import com.example.newsapp.Utils.DensityUtil;
+import com.example.newsapp.acitivyty.MainActivity;
 import com.example.newsapp.base.BaseFragment;
 import com.example.newsapp.base.BasePager;
 import com.example.newsapp.domain.NewsControlBean;
+import com.example.newsapp.pager.NewsPager;
 
 import java.util.List;
 
@@ -47,9 +49,19 @@ public class LeftMenuFragment extends BaseFragment {
                     }
                     preView = view;
                 }
+
+                SwitchMenuDetailPager(position);
             }
         });
         return listView;
+    }
+
+    private void SwitchMenuDetailPager(int position) {
+        MainActivity mainActivity = (MainActivity) context;
+        ContentFragment contentFragment = mainActivity.getContentFragment();
+        NewsPager newsPager = contentFragment.getNewsPager();
+        newsPager.switchPager(position);
+
     }
 
     @Override

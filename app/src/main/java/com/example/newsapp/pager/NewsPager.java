@@ -2,19 +2,27 @@ package com.example.newsapp.pager;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
 
+import com.example.newsapp.MenuDetailPager.InteractDetailPager;
+import com.example.newsapp.MenuDetailPager.NewsDetailPager;
+import com.example.newsapp.MenuDetailPager.PictureDetailPager;
+import com.example.newsapp.MenuDetailPager.TopicDetailPager;
+import com.example.newsapp.MenuDetailPager.VoteDetailPager;
 import com.example.newsapp.Utils.ConstantUtils;
 import com.example.newsapp.acitivyty.MainActivity;
 import com.example.newsapp.base.BasePager;
+import com.example.newsapp.base.MenuDetailBasePager;
 import com.example.newsapp.domain.NewsControlBean;
 import com.example.newsapp.fragment.LeftMenuFragment;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -28,6 +36,7 @@ import static android.R.attr.data;
 public class NewsPager extends BasePager {
 
     private List<NewsControlBean.DataBean> datas;
+    private ArrayList<MenuDetailBasePager> basePagers;
 
     public NewsPager(Context context) {
         super(context);
@@ -39,14 +48,21 @@ public class NewsPager extends BasePager {
     public void initData() {
         Log.e("TAG","NewsPager,initData");
         super.initData();
+        basePagers = new ArrayList<>();
+        basePagers.add(new NewsDetailPager(context));
+        basePagers.add(new TopicDetailPager(context));
+        basePagers.add(new PictureDetailPager(context));
+        basePagers.add(new InteractDetailPager(context));
+        basePagers.add(new VoteDetailPager(context));
+//        tv_title.setText("主页");
+//        TextView textView = new TextView(context);
+//        textView.setText("NewsPager");
+//        textView.setGravity(Gravity.CENTER);
+//        textView.setTextColor(Color.RED);
+//
 
-        tv_title.setText("主页");
-        TextView textView = new TextView(context);
-        textView.setText("NewsPager");
-        textView.setGravity(Gravity.CENTER);
-        textView.setTextColor(Color.RED);
 
-        fl_content.addView(textView);
+
 
         getDataFromNet();
 
@@ -89,4 +105,10 @@ public class NewsPager extends BasePager {
     }
 
 
+    public void switchPager(int position) {
+        fl_content.removeAllViews();
+        fl_content.addView(basePagers.get(position).rootView);
+        MenuDetailBasePager menuDetailBasePager = basePagers.get(position);
+        menuDetailBasePager.initData();
+    }
 }
