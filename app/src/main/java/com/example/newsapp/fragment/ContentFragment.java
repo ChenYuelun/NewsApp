@@ -98,13 +98,13 @@ public class ContentFragment extends BaseFragment {
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             switch (checkedId) {
                 case R.id.rb_home :
-                    contentVp.setCurrentItem(0);
+                    contentVp.setCurrentItem(0,false);
                     break;
                 case R.id.rb_news :
-                    contentVp.setCurrentItem(1);
+                    contentVp.setCurrentItem(1,false);
                     break;
                 case R.id.rb_setting :
-                    contentVp.setCurrentItem(2);
+                    contentVp.setCurrentItem(2,false);
                     break;
             }
         }
