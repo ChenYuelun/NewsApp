@@ -37,7 +37,7 @@ public class MainActivity extends SlidingFragmentActivity {
         setBehindContentView(R.layout.layout_leftmenu);
         SlidingMenu slidingMenu = getSlidingMenu();
         slidingMenu.setMode(SlidingMenu.LEFT);
-        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
         slidingMenu.setBehindOffset(DensityUtil.dip2px(this,200));
     }
 }

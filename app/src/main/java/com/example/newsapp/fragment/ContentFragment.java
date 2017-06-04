@@ -15,6 +15,7 @@ import com.example.newsapp.base.BasePager;
 import com.example.newsapp.pager.HomePager;
 import com.example.newsapp.pager.NewsPager;
 import com.example.newsapp.pager.SettingPager;
+import com.example.newsapp.view.NoSlideViewPager;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,7 @@ import butterknife.Unbinder;
 
 public class ContentFragment extends BaseFragment {
     @BindView(R.id.content_vp)
-    ViewPager contentVp;
+    NoSlideViewPager contentVp;
     @BindView(R.id.rg_content)
     RadioGroup rgContent;
     Unbinder unbinder;
@@ -118,15 +119,7 @@ public class ContentFragment extends BaseFragment {
         @Override
         public void onPageSelected(int position) {
             switch (position) {
-                case  0:
-                    rgContent.check(R.id.rb_home);
-                    break;
-                case  1:
-                    rgContent.check(R.id.rb_news);
-                    break;
-                case  2:
-                    rgContent.check(R.id.rb_setting);
-                    break;
+
             }
         }
 
