@@ -1,5 +1,6 @@
 package com.example.newsapp.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -10,12 +11,14 @@ import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
 import com.example.newsapp.R;
+import com.example.newsapp.acitivyty.MainActivity;
 import com.example.newsapp.base.BaseFragment;
 import com.example.newsapp.base.BasePager;
 import com.example.newsapp.pager.HomePager;
 import com.example.newsapp.pager.NewsPager;
 import com.example.newsapp.pager.SettingPager;
 import com.example.newsapp.view.NoSlideViewPager;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
 
@@ -58,7 +61,13 @@ public class ContentFragment extends BaseFragment {
         pagers.add(new SettingPager(context));
 
         contentVp.setAdapter(new MyPagerAdapter());
+        pagers.get(0).initData();
+        isEnableSlideMenu((Context) context,SlidingMenu.TOUCHMODE_NONE);
+
+
+
     }
+
 
 
     @Override
@@ -119,11 +128,28 @@ public class ContentFragment extends BaseFragment {
         @Override
         public void onPageSelected(int position) {
             pagers.get(position).initData();
+            if(position == 1) {
+                ContentFragment.this.isEnableSlideMenu(context, SlidingMenu.TOUCHMODE_MARGIN);
+            }else {
+                isEnableSlideMenu((MainActivity) context, SlidingMenu.TOUCHMODE_NONE);
+            }
         }
 
         @Override
         public void onPageScrollStateChanged(int state) {
 
         }
+
+
+
+
+
+
+    }
+
+    private static void isEnableSlideMenu(Context context, int touchmodeMargin) {
+        MainActivity mainActivity = (MainActivity) context;
+        SlidingMenu slidingMenu = mainActivity.getSlidingMenu();
+        slidingMenu.setTouchModeAbove(touchmodeMargin);
     }
 }
