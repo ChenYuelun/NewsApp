@@ -1,12 +1,21 @@
 package com.example.newsapp.fragment;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.newsapp.R;
+import com.example.newsapp.Utils.DensityUtil;
 import com.example.newsapp.base.BaseFragment;
+import com.example.newsapp.base.BasePager;
 import com.example.newsapp.domain.NewsControlBean;
 
 import java.util.List;
@@ -16,26 +25,52 @@ import java.util.List;
  */
 
 public class LeftMenuFragment extends BaseFragment {
-    TextView textView;
     private List<NewsControlBean.DataBean> datas;
+    private ListView listView;
 
     @Override
     public View initView() {
-        textView = new TextView(context);
-        textView.setTextColor(Color.RED);
-        textView.setTextSize(30);
-        textView.setGravity(Gravity.CENTER);
-        return textView;
+        listView = new ListView(context);
+        listView.setPadding(0, DensityUtil.dip2px(context,40),0,0);
+        listView.setDivider(new ColorDrawable(Color.RED));
+        listView.setDividerHeight(DensityUtil.dip2px(context,2));
+        return listView;
     }
 
     @Override
     public void initData() {
         super.initData();
-        textView.setText("LeftMenuFragment");
     }
 
     public void setData(List<NewsControlBean.DataBean> datas) {
         this.datas = datas;
         Log.e("TAG","数据已传递到侧滑菜单");
+        listView.setAdapter(new MyAdapter());
+    }
+
+    class MyAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return datas == null? 0 : datas.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            TextView textView = (TextView) View.inflate(context, R.layout.item_list_leftmenu,null);
+            NewsControlBean.DataBean dataBean = datas.get(position);
+            textView.setText(dataBean.getTitle());
+            return textView;
+        }
     }
 }
