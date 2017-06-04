@@ -7,19 +7,27 @@ import android.view.Gravity;
 import android.widget.TextView;
 
 import com.example.newsapp.Utils.ConstantUtils;
+import com.example.newsapp.acitivyty.MainActivity;
 import com.example.newsapp.base.BasePager;
 import com.example.newsapp.domain.NewsControlBean;
+import com.example.newsapp.fragment.LeftMenuFragment;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.util.List;
+
 import okhttp3.Call;
+
+import static android.R.attr.data;
 
 /**
  * Created by chenyuelun on 2017/6/2.
  */
 
 public class NewsPager extends BasePager {
+
+    private List<NewsControlBean.DataBean> datas;
 
     public NewsPager(Context context) {
         super(context);
@@ -72,7 +80,12 @@ public class NewsPager extends BasePager {
 
     private void processData(String json) {
         NewsControlBean newsControlBean = new Gson().fromJson(json, NewsControlBean.class);
-        Log.e("TAG","数据解析成功:+" + newsControlBean.getData().get(0).getTitle());
+        datas = newsControlBean.getData();
+        Log.e("TAG","数据解析成功:+" + datas.get(0).getTitle());
+
+        MainActivity mainActivity = (MainActivity) context;
+        LeftMenuFragment leftMenuFragment = mainActivity.getLeftMenuFragment();
+        leftMenuFragment.setData(datas);
     }
 
 
