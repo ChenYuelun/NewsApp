@@ -19,7 +19,7 @@
         </activity>
         <activity
             android:name=".acitivyty.MainActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar" />
+            android:theme="@style/Theme.PageIndicatorDefaults" />
         <activity android:name=".acitivyty.GuideActivity"></activity>
     </application>
 

@@ -1,17 +1,15 @@
 package com.example.newsapp.MenuDetailPager;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.newsapp.R;
 import com.example.newsapp.base.MenuDetailBasePager;
 import com.example.newsapp.domain.NewsControlBean;
+import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +22,7 @@ public class NewsDetailPager extends MenuDetailBasePager {
     private final List<NewsControlBean.DataBean.ChildrenBean> datas;
     private ViewPager viewpager;
     private ArrayList<TabDetaiPager> tabDetaiPagers;
+    private TabPageIndicator indicator;
     public NewsDetailPager(Context context, List<NewsControlBean.DataBean.ChildrenBean> children) {
         super(context);
         this.datas = children;
@@ -33,6 +32,7 @@ public class NewsDetailPager extends MenuDetailBasePager {
     public View initView() {
         View view = View.inflate(context, R.layout.pager_tab_detail,null);
         viewpager = (ViewPager) view.findViewById(R.id.viewpager);
+        indicator = (TabPageIndicator) view.findViewById(R.id.indicator);
         return view;
     }
 
@@ -44,9 +44,16 @@ public class NewsDetailPager extends MenuDetailBasePager {
             tabDetaiPagers.add(new TabDetaiPager(context,datas.get(i)));
 
         viewpager.setAdapter(new NewsDetailPagerAdapter());
+        indicator.setViewPager(viewpager);
     }
 
     private class NewsDetailPagerAdapter extends PagerAdapter {
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return datas.get(position).getTitle();
+        }
+
         @Override
         public int getCount() {
             return tabDetaiPagers == null? 0 :tabDetaiPagers.size();
