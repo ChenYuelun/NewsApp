@@ -20,6 +20,7 @@ import com.example.newsapp.Utils.DensityUtil;
 import com.example.newsapp.base.MenuDetailBasePager;
 import com.example.newsapp.domain.NewsControlBean;
 import com.example.newsapp.domain.NewsDetailBean;
+import com.example.newsapp.view.HorizontalScrollViewPager;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -35,7 +36,7 @@ import okhttp3.Call;
  */
 
 public class TabDetaiPager extends MenuDetailBasePager {
-    ViewPager viewpagerTopNews;
+    HorizontalScrollViewPager viewpagerTopNews;
     TextView topNewsTitle;
     LinearLayout llPointgroup;
     @BindView(R.id.listview_tab_detail)
@@ -57,7 +58,7 @@ public class TabDetaiPager extends MenuDetailBasePager {
         View view = View.inflate(context, R.layout.pager_tab_detail, null);
         ButterKnife.bind(this, view);
         View topNewsView = View.inflate(context,R.layout.item_topnews,null);
-        viewpagerTopNews = (ViewPager) topNewsView.findViewById(R.id.viewpager_topNews);
+        viewpagerTopNews = (HorizontalScrollViewPager) topNewsView.findViewById(R.id.viewpager_topNews);
         topNewsTitle = (TextView) topNewsView.findViewById(R.id.topNewsTitle);
         llPointgroup = (LinearLayout) topNewsView.findViewById(R.id.ll_pointgroup);
         listviewTabDetail.addHeaderView(topNewsView);
