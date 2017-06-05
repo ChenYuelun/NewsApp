@@ -73,6 +73,8 @@ public class LeftMenuFragment extends BaseFragment {
         this.datas = datas;
         Log.e("TAG","数据已传递到侧滑菜单");
         listView.setAdapter(new MyAdapter());
+        SwitchMenuDetailPager(0);
+
     }
 
     class MyAdapter extends BaseAdapter {
@@ -95,6 +97,11 @@ public class LeftMenuFragment extends BaseFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView textView = (TextView) View.inflate(context, R.layout.item_list_leftmenu,null);
+            if(position == 0) {
+                textView.setEnabled(true);
+            }else {
+                textView.setEnabled(false);
+            }
             NewsControlBean.DataBean dataBean = datas.get(position);
             textView.setText(dataBean.getTitle());
             return textView;

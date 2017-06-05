@@ -3,8 +3,10 @@ package com.example.newsapp.pager;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.newsapp.MenuDetailPager.InteractDetailPager;
@@ -22,12 +24,17 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
 
 import static android.R.attr.data;
+import static android.os.Build.VERSION_CODES.N;
 
 /**
  * Created by chenyuelun on 2017/6/2.
@@ -46,8 +53,10 @@ public class NewsPager extends BasePager {
 
     @Override
     public void initData() {
-        Log.e("TAG","NewsPager,initData");
+        Log.e("TAG", "NewsPager,initData");
         super.initData();
+        ib_menu.setVisibility(View.VISIBLE);
+
         basePagers = new ArrayList<>();
         basePagers.add(new NewsDetailPager(context));
         basePagers.add(new TopicDetailPager(context));
@@ -62,8 +71,6 @@ public class NewsPager extends BasePager {
 //
 
 
-
-
         getDataFromNet();
 
     }
@@ -76,17 +83,16 @@ public class NewsPager extends BasePager {
 //                .addParams("username", "hyman")
 //                .addParams("password", "123")
                 .build()
-                .execute(new StringCallback()
-                {
+                .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Log.e("TAG","请求失败=="+e.getMessage());
+                        Log.e("TAG", "请求失败==" + e.getMessage());
 
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("TAG","请求成功=="+response);
+                        Log.e("TAG", "请求成功==" + response);
                         processData(response);
                     }
 
@@ -95,13 +101,61 @@ public class NewsPager extends BasePager {
     }
 
     private void processData(String json) {
-        NewsControlBean newsControlBean = new Gson().fromJson(json, NewsControlBean.class);
+        //NewsControlBean newsControlBean = new Gson().fromJson(json, NewsControlBean.class);
+        NewsControlBean newsControlBean = parseJson(json);
         datas = newsControlBean.getData();
-        Log.e("TAG","数据解析成功:+" + datas.get(0).getTitle());
+        Log.e("TAG", "数据解析成功:+" + datas.get(0).getTitle());
 
         MainActivity mainActivity = (MainActivity) context;
         LeftMenuFragment leftMenuFragment = mainActivity.getLeftMenuFragment();
         leftMenuFragment.setData(datas);
+    }
+
+    private NewsControlBean parseJson(String json) {
+        NewsControlBean newsControlBean = new NewsControlBean();
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            int retcode = jsonObject.optInt("retcode");
+            Log.e("TAG","retcode:"+retcode);
+            newsControlBean.setRetcode(retcode);
+            JSONArray data = jsonObject.optJSONArray("data");
+            if (data != null) {
+                List<NewsControlBean.DataBean> dataBeanList = new ArrayList<>();
+                newsControlBean.setData(dataBeanList);
+
+                for (int i = 0; i < data.length(); i++) {
+                    JSONObject jsonObject1 = (JSONObject) data.get(i);
+                    NewsControlBean.DataBean dataBean = new NewsControlBean.DataBean();
+                    dataBean.setId(jsonObject1.optInt("id"));
+                    dataBean.setTitle(jsonObject1.optString("title"));
+                    dataBean.setType(jsonObject1.optInt("type"));
+                    dataBean.setUrl(jsonObject1.optString("url"));
+
+                    JSONArray children = jsonObject1.optJSONArray("children");
+                    if (children != null) {
+                        List<NewsControlBean.DataBean.ChildrenBean> childrenBeanList = new ArrayList<>();
+                        dataBean.setChildren(childrenBeanList);
+                        NewsControlBean.DataBean.ChildrenBean childrenBean = new NewsControlBean.DataBean.ChildrenBean();
+                        for(int j = 0; j < children.length(); j++) {
+                            JSONObject jsonObject2 = (JSONObject) children.get(j);
+                            childrenBean.setId(jsonObject2.optInt("id"));
+                            childrenBean.setTitle(jsonObject2.optString("title"));
+                            childrenBean.setType(jsonObject2.optInt("type"));
+                            childrenBean.setUrl(jsonObject2.optString("url"));
+                            childrenBeanList.add(childrenBean);
+                        }
+
+                    }
+
+                    dataBeanList.add(dataBean);
+                }
+
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return newsControlBean;
     }
 
 
