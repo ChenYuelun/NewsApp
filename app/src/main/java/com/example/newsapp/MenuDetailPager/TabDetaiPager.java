@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -46,6 +47,7 @@ public class TabDetaiPager extends MenuDetailBasePager {
     private List<NewsDetailBean.DataBean.TopnewsBean> topnews;
     private RequestOptions myOptions = new RequestOptions().centerCrop().placeholder(R.drawable.news_pic_default).error(R.drawable.news_pic_default);
     private int prePosition;
+    private List<NewsDetailBean.DataBean.NewsBean> newsBeanList;
 
     public TabDetaiPager(Context context, NewsControlBean.DataBean.ChildrenBean childrenBean) {
         super(context);
@@ -127,25 +129,29 @@ public class TabDetaiPager extends MenuDetailBasePager {
     private void processData(String json) {
         NewsDetailBean newsDetailBean = new Gson().fromJson(json, NewsDetailBean.class);
         topnews = newsDetailBean.getData().getTopnews();
+        newsBeanList = newsDetailBean.getData().getNews();
 
         viewpagerTopNews.setAdapter(new TopNewsPagerAdapter());
         topNewsTitle.setText(topnews.get(prePosition).getTitle());
         llPointgroup.removeAllViews();
-        for(int i = 0; i < topnews.size(); i++) {
+        for (int i = 0; i < topnews.size(); i++) {
             ImageView point = new ImageView(context);
             point.setBackgroundResource(R.drawable.point_selector);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtil.dip2px(context,10),DensityUtil.dip2px(context,10));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtil.dip2px(context, 10), DensityUtil.dip2px(context, 10));
             point.setLayoutParams(params);
 
-            if(i==0){
+            if (i == 0) {
                 point.setEnabled(true);
-            }else {
+            } else {
                 point.setEnabled(false);
-                params.leftMargin = DensityUtil.dip2px(context,10);
+                params.leftMargin = DensityUtil.dip2px(context, 10);
             }
 
             llPointgroup.addView(point);
         }
+
+        //listView数据适配
+        listviewTabDetail.setAdapter(new TabNewsListAdapter());
 
 
     }
@@ -177,6 +183,56 @@ public class TabDetaiPager extends MenuDetailBasePager {
             container.addView(imageView);
             Glide.with(context).load(imageUrl).apply(myOptions).into(imageView);
             return imageView;
+        }
+    }
+
+    private class TabNewsListAdapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+            return newsBeanList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder;
+            if (convertView == null) {
+                convertView = View.inflate(context, R.layout.item_tab_detail, null);
+                viewHolder = new ViewHolder(convertView);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+            NewsDetailBean.DataBean.NewsBean newsBean = newsBeanList.get(position);
+            viewHolder.newsTitle.setText(newsBean.getTitle());
+            viewHolder.newsTime.setText(newsBean.getPubdate());
+            String imageUrl = ConstantUtils.BASE_URL + newsBean.getListimage();
+            Glide.with(context).load(imageUrl).apply(myOptions).into(viewHolder.ivPicture);
+            return convertView;
+        }
+
+
+    }
+
+    static class ViewHolder {
+        @BindView(R.id.iv_picture)
+        ImageView ivPicture;
+        @BindView(R.id.newsTitle)
+        TextView newsTitle;
+        @BindView(R.id.newsTime)
+        TextView newsTime;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
         }
     }
 }

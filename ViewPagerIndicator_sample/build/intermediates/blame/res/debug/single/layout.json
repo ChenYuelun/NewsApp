@@ -1,11 +1,11 @@
 [
     {
-        "merged": "D:\\MyWork\\Android\\AndroidStudioProjects\\NewsApp\\ViewPagerIndicator_sample\\build\\intermediates\\res\\merged\\debug\\layout\\simple_icons.xml",
-        "source": "D:\\MyWork\\Android\\AndroidStudioProjects\\NewsApp\\ViewPagerIndicator_sample\\src\\main\\res\\layout\\simple_icons.xml"
-    },
-    {
         "merged": "D:\\MyWork\\Android\\AndroidStudioProjects\\NewsApp\\ViewPagerIndicator_sample\\build\\intermediates\\res\\merged\\debug\\layout\\simple_titles_bottom.xml",
         "source": "D:\\MyWork\\Android\\AndroidStudioProjects\\NewsApp\\ViewPagerIndicator_sample\\src\\main\\res\\layout\\simple_titles_bottom.xml"
+    },
+    {
+        "merged": "D:\\MyWork\\Android\\AndroidStudioProjects\\NewsApp\\ViewPagerIndicator_sample\\build\\intermediates\\res\\merged\\debug\\layout\\simple_icons.xml",
+        "source": "D:\\MyWork\\Android\\AndroidStudioProjects\\NewsApp\\ViewPagerIndicator_sample\\src\\main\\res\\layout\\simple_icons.xml"
     },
     {
         "merged": "D:\\MyWork\\Android\\AndroidStudioProjects\\NewsApp\\ViewPagerIndicator_sample\\build\\intermediates\\res\\merged\\debug\\layout\\themed_titles.xml",
