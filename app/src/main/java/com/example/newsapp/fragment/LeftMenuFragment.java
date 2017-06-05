@@ -51,6 +51,9 @@ public class LeftMenuFragment extends BaseFragment {
                 }
 
                 SwitchMenuDetailPager(position);
+                MainActivity mainActivity = (MainActivity) context;
+                mainActivity.getSlidingMenu().toggle();
+
             }
         });
         return listView;
@@ -98,6 +101,7 @@ public class LeftMenuFragment extends BaseFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView textView = (TextView) View.inflate(context, R.layout.item_list_leftmenu,null);
             if(position == 0) {
+                preView = textView;
                 textView.setEnabled(true);
             }else {
                 textView.setEnabled(false);

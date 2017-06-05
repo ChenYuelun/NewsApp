@@ -33,8 +33,6 @@ import java.util.List;
 
 import okhttp3.Call;
 
-import static android.R.attr.data;
-import static android.os.Build.VERSION_CODES.N;
 
 /**
  * Created by chenyuelun on 2017/6/2.
@@ -56,23 +54,21 @@ public class NewsPager extends BasePager {
         Log.e("TAG", "NewsPager,initData");
         super.initData();
         ib_menu.setVisibility(View.VISIBLE);
+        tv_title.setText("新闻");
 
-        basePagers = new ArrayList<>();
-        basePagers.add(new NewsDetailPager(context));
-        basePagers.add(new TopicDetailPager(context));
-        basePagers.add(new PictureDetailPager(context));
-        basePagers.add(new InteractDetailPager(context));
-        basePagers.add(new VoteDetailPager(context));
-//        tv_title.setText("主页");
-//        TextView textView = new TextView(context);
-//        textView.setText("NewsPager");
-//        textView.setGravity(Gravity.CENTER);
-//        textView.setTextColor(Color.RED);
-//
 
 
         getDataFromNet();
 
+    }
+
+    private void initMenuDetailPagers() {
+        basePagers = new ArrayList<>();
+        basePagers.add(new NewsDetailPager(context,datas.get(0).getChildren()));
+        basePagers.add(new TopicDetailPager(context));
+        basePagers.add(new PictureDetailPager(context));
+        basePagers.add(new InteractDetailPager(context));
+        basePagers.add(new VoteDetailPager(context));
     }
 
     private void getDataFromNet() {
@@ -80,8 +76,6 @@ public class NewsPager extends BasePager {
         OkHttpUtils
                 .get()
                 .url(url)
-//                .addParams("username", "hyman")
-//                .addParams("password", "123")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -101,11 +95,11 @@ public class NewsPager extends BasePager {
     }
 
     private void processData(String json) {
-        //NewsControlBean newsControlBean = new Gson().fromJson(json, NewsControlBean.class);
-        NewsControlBean newsControlBean = parseJson(json);
+        NewsControlBean newsControlBean = new Gson().fromJson(json, NewsControlBean.class);
+        //NewsControlBean newsControlBean = parseJson(json);
         datas = newsControlBean.getData();
         Log.e("TAG", "数据解析成功:+" + datas.get(0).getTitle());
-
+        initMenuDetailPagers();
         MainActivity mainActivity = (MainActivity) context;
         LeftMenuFragment leftMenuFragment = mainActivity.getLeftMenuFragment();
         leftMenuFragment.setData(datas);

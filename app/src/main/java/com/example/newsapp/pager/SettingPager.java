@@ -25,7 +25,7 @@ public class SettingPager extends BasePager {
         Log.e("TAG","SettingPager,initData");
         super.initData();
 
-        tv_title.setText("主页");
+        tv_title.setText("设置");
         TextView textView = new TextView(context);
         textView.setText("SettingPager");
         textView.setGravity(Gravity.CENTER);

@@ -137,6 +137,7 @@ public class ContentFragment extends BaseFragment {
             }else {
                 isEnableSlideMenu((MainActivity) context, SlidingMenu.TOUCHMODE_NONE);
             }
+
         }
 
         @Override
