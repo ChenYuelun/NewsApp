@@ -6,7 +6,6 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import com.example.newsapp.R;
 import com.example.newsapp.acitivyty.MainActivity;
@@ -17,8 +16,6 @@ import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by chenyuelun on 2017/6/4.
@@ -37,7 +34,7 @@ public class NewsDetailPager extends MenuDetailBasePager {
 
     @Override
     public View initView() {
-        View view = View.inflate(context, R.layout.pager_tab_detail,null);
+        View view = View.inflate(context, R.layout.pager_news_detail,null);
         viewpager = (ViewPager) view.findViewById(R.id.viewpager);
         indicator = (TabPageIndicator) view.findViewById(R.id.indicator);
         ib_next = (ImageButton) view.findViewById(R.id.ib_next);
