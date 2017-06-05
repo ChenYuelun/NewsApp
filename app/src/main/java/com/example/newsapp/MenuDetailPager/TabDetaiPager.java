@@ -35,14 +35,11 @@ import okhttp3.Call;
  */
 
 public class TabDetaiPager extends MenuDetailBasePager {
-    @BindView(R.id.topNewsTitle)
+    ViewPager viewpagerTopNews;
     TextView topNewsTitle;
-    @BindView(R.id.ll_pointgroup)
     LinearLayout llPointgroup;
     @BindView(R.id.listview_tab_detail)
     ListView listviewTabDetail;
-    @BindView(R.id.viewpager_topNews)
-    ViewPager viewpagerTopNews;
     private NewsControlBean.DataBean.ChildrenBean childrenBean;
     private List<NewsDetailBean.DataBean.TopnewsBean> topnews;
     private RequestOptions myOptions = new RequestOptions().centerCrop().placeholder(R.drawable.news_pic_default).error(R.drawable.news_pic_default);
@@ -59,6 +56,11 @@ public class TabDetaiPager extends MenuDetailBasePager {
     public View initView() {
         View view = View.inflate(context, R.layout.pager_tab_detail, null);
         ButterKnife.bind(this, view);
+        View topNewsView = View.inflate(context,R.layout.item_topnews,null);
+        viewpagerTopNews = (ViewPager) topNewsView.findViewById(R.id.viewpager_topNews);
+        topNewsTitle = (TextView) topNewsView.findViewById(R.id.topNewsTitle);
+        llPointgroup = (LinearLayout) topNewsView.findViewById(R.id.ll_pointgroup);
+        listviewTabDetail.addHeaderView(topNewsView);
 
         viewpagerTopNews.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
