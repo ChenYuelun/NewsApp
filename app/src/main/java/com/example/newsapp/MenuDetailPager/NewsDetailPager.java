@@ -9,12 +9,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.newsapp.R;
+import com.example.newsapp.acitivyty.MainActivity;
 import com.example.newsapp.base.MenuDetailBasePager;
 import com.example.newsapp.domain.NewsControlBean;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by chenyuelun on 2017/6/4.
@@ -41,6 +45,29 @@ public class NewsDetailPager extends MenuDetailBasePager {
             @Override
             public void onClick(View v) {
                 viewpager.setCurrentItem(viewpager.getCurrentItem()+1);
+            }
+        });
+
+        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 0) {
+                    MainActivity mainActivity = (MainActivity) context;
+                    mainActivity.getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+                }else {
+                    MainActivity mainActivity = (MainActivity) context;
+                    mainActivity.getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
         return view;
