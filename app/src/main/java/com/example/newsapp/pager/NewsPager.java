@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.myutils_library.Utils.CacheUtils;
@@ -33,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
+
+import static android.media.CamcorderProfile.get;
 
 
 /**
@@ -167,8 +170,18 @@ public class NewsPager extends BasePager {
         menuDetailBasePager.initData();
         if(position == 2) {
             ib_switch_list_grid.setVisibility(View.VISIBLE);
+            ib_switch_list_grid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PictureDetailPager pictureDetailPager = (com.example.newsapp.MenuDetailPager.PictureDetailPager) basePagers.get(2);
+                    pictureDetailPager.switchListOrGrid(ib_switch_list_grid);
+                }
+            });
+
         }else {
             ib_switch_list_grid.setVisibility(View.GONE);
         }
     }
+
+
 }

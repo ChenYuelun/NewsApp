@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import com.example.myutils_library.Utils.CacheUtils;
@@ -36,6 +37,7 @@ public class PictureDetailPager extends MenuDetailBasePager {
     ProgressBar pbPicture;
     private List<PictureNewsBean.DataBean.NewsBean> newsBeanList;
     private MyRecyclerViewAdapter adapter;
+    private StaggeredGridLayoutManager layoutManger;
 
     public PictureDetailPager(Context context, NewsControlBean.DataBean dataBean) {
         super(context);
@@ -86,8 +88,21 @@ public class PictureDetailPager extends MenuDetailBasePager {
             newsBeanList = pictureNewsBean.getData().getNews();
             adapter = new MyRecyclerViewAdapter(context, newsBeanList);
             recyclerView.setAdapter(adapter);
-            StaggeredGridLayoutManager layoutManger = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL);
+            layoutManger = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManger);
+        }
+    }
+
+    private boolean isShowList = true;
+    public void switchListOrGrid(ImageButton ib_switch_list_grid) {
+        if(isShowList) {
+            isShowList = false;
+            layoutManger.setSpanCount(2);
+            ib_switch_list_grid.setImageResource(R.drawable.icon_pic_list_type);
+        }else {
+            isShowList = true;
+            layoutManger.setSpanCount(1);
+            ib_switch_list_grid.setImageResource(R.drawable.icon_pic_grid_type);
         }
     }
 }
