@@ -3,6 +3,7 @@ package com.example.newsapp.MenuDetailPager;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.example.newsapp.domain.NewsControlBean;
 import com.example.newsapp.domain.NewsDetailBean;
 import com.example.newsapp.view.HorizontalScrollViewPager;
 import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -39,13 +42,18 @@ public class TabDetaiPager extends MenuDetailBasePager {
     HorizontalScrollViewPager viewpagerTopNews;
     TextView topNewsTitle;
     LinearLayout llPointgroup;
-    @BindView(R.id.listview_tab_detail)
     ListView listviewTabDetail;
+    @BindView(R.id.pull_refresh_list)
+    PullToRefreshListView pullRefreshList;
     private NewsControlBean.DataBean.ChildrenBean childrenBean;
     private List<NewsDetailBean.DataBean.TopnewsBean> topnews;
     private RequestOptions myOptions = new RequestOptions().centerCrop().placeholder(R.drawable.news_pic_default).error(R.drawable.news_pic_default);
     private int prePosition;
     private List<NewsDetailBean.DataBean.NewsBean> newsBeanList;
+    private String url;
+    private String moreUrl;
+    private TabNewsListAdapter tabNewsListAdapter;
+    private boolean isMoreDataFromNet = false;
 
     public TabDetaiPager(Context context, NewsControlBean.DataBean.ChildrenBean childrenBean) {
         super(context);
@@ -57,7 +65,8 @@ public class TabDetaiPager extends MenuDetailBasePager {
     public View initView() {
         View view = View.inflate(context, R.layout.pager_tab_detail, null);
         ButterKnife.bind(this, view);
-        View topNewsView = View.inflate(context,R.layout.item_topnews,null);
+        listviewTabDetail = pullRefreshList.getRefreshableView();
+        View topNewsView = View.inflate(context, R.layout.item_topnews, null);
         viewpagerTopNews = (HorizontalScrollViewPager) topNewsView.findViewById(R.id.viewpager_topNews);
         topNewsTitle = (TextView) topNewsView.findViewById(R.id.topNewsTitle);
         llPointgroup = (LinearLayout) topNewsView.findViewById(R.id.ll_pointgroup);
@@ -94,6 +103,24 @@ public class TabDetaiPager extends MenuDetailBasePager {
 
             }
         });
+
+        pullRefreshList.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                isMoreDataFromNet = false;
+                getDataFromNet(url);
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                if(moreUrl != null) {
+                    isMoreDataFromNet = true;
+                    getDataFromNet(moreUrl);
+                    moreUrl = null;
+                }
+
+            }
+        });
         return view;
     }
 
@@ -101,7 +128,7 @@ public class TabDetaiPager extends MenuDetailBasePager {
     public void initData() {
         super.initData();
 //        topNewsTitle.setText(childrenBean.getTitle());
-        String url = ConstantUtils.BASE_URL + childrenBean.getUrl();
+        url = ConstantUtils.BASE_URL + childrenBean.getUrl();
         getDataFromNet(url);
 
 
@@ -123,6 +150,8 @@ public class TabDetaiPager extends MenuDetailBasePager {
                     public void onResponse(String response, int id) {
                         Log.e("TAG", "请求成功==" + response);
                         processData(response);
+                        pullRefreshList.onRefreshComplete();
+
                     }
 
 
@@ -131,30 +160,42 @@ public class TabDetaiPager extends MenuDetailBasePager {
 
     private void processData(String json) {
         NewsDetailBean newsDetailBean = new Gson().fromJson(json, NewsDetailBean.class);
-        topnews = newsDetailBean.getData().getTopnews();
-        newsBeanList = newsDetailBean.getData().getNews();
-
-        viewpagerTopNews.setAdapter(new TopNewsPagerAdapter());
-        topNewsTitle.setText(topnews.get(prePosition).getTitle());
-        llPointgroup.removeAllViews();
-        for (int i = 0; i < topnews.size(); i++) {
-            ImageView point = new ImageView(context);
-            point.setBackgroundResource(R.drawable.point_selector);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtil.dip2px(context, 10), DensityUtil.dip2px(context, 10));
-            point.setLayoutParams(params);
-
-            if (i == 0) {
-                point.setEnabled(true);
-            } else {
-                point.setEnabled(false);
-                params.leftMargin = DensityUtil.dip2px(context, 10);
-            }
-
-            llPointgroup.addView(point);
+        String more = newsDetailBean.getData().getMore();
+        if(!TextUtils.isEmpty(more)) {
+            moreUrl = ConstantUtils.BASE_URL+more;
         }
 
-        //listView数据适配
-        listviewTabDetail.setAdapter(new TabNewsListAdapter());
+        if(!isMoreDataFromNet) {
+            topnews = newsDetailBean.getData().getTopnews();
+            newsBeanList = newsDetailBean.getData().getNews();
+            viewpagerTopNews.setAdapter(new TopNewsPagerAdapter());
+            topNewsTitle.setText(topnews.get(prePosition).getTitle());
+            llPointgroup.removeAllViews();
+            for (int i = 0; i < topnews.size(); i++) {
+                ImageView point = new ImageView(context);
+                point.setBackgroundResource(R.drawable.point_selector);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtil.dip2px(context, 10), DensityUtil.dip2px(context, 10));
+                point.setLayoutParams(params);
+
+                if (i == 0) {
+                    point.setEnabled(true);
+                } else {
+                    point.setEnabled(false);
+                    params.leftMargin = DensityUtil.dip2px(context, 10);
+                }
+
+                llPointgroup.addView(point);
+            }
+
+            //listView数据适配
+            tabNewsListAdapter = new TabNewsListAdapter();
+            listviewTabDetail.setAdapter(tabNewsListAdapter);
+
+        }else {
+            newsBeanList.addAll(newsDetailBean.getData().getNews());
+            tabNewsListAdapter.notifyDataSetChanged();
+        }
+
 
 
     }

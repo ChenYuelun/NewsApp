@@ -14,6 +14,7 @@ import com.example.newsapp.MenuDetailPager.NewsDetailPager;
 import com.example.newsapp.MenuDetailPager.PictureDetailPager;
 import com.example.newsapp.MenuDetailPager.TopicDetailPager;
 import com.example.newsapp.MenuDetailPager.VoteDetailPager;
+import com.example.newsapp.Utils.CacheUtils;
 import com.example.newsapp.Utils.ConstantUtils;
 import com.example.newsapp.acitivyty.MainActivity;
 import com.example.newsapp.base.BasePager;
@@ -42,6 +43,7 @@ public class NewsPager extends BasePager {
 
     private List<NewsControlBean.DataBean> datas;
     private ArrayList<MenuDetailBasePager> basePagers;
+    private String url;
 
     public NewsPager(Context context) {
         super(context);
@@ -55,7 +57,10 @@ public class NewsPager extends BasePager {
         super.initData();
         ib_menu.setVisibility(View.VISIBLE);
         tv_title.setText("新闻");
-
+        String stringData = CacheUtils.getStringData(context, ConstantUtils.NEWSCENTER_PAGER_URL);
+        if(!TextUtils.isEmpty(stringData)) {
+           processData(stringData);
+        }
 
 
         getDataFromNet();
@@ -72,7 +77,7 @@ public class NewsPager extends BasePager {
     }
 
     private void getDataFromNet() {
-        String url = ConstantUtils.NEWSCENTER_PAGER_URL;
+        url = ConstantUtils.NEWSCENTER_PAGER_URL;
         OkHttpUtils
                 .get()
                 .url(url)
@@ -88,6 +93,7 @@ public class NewsPager extends BasePager {
                     public void onResponse(String response, int id) {
                         Log.e("TAG", "请求成功==" + response);
                         processData(response);
+                        CacheUtils.putStringData(context,ConstantUtils.NEWSCENTER_PAGER_URL,response);
                     }
 
 
@@ -154,6 +160,7 @@ public class NewsPager extends BasePager {
 
 
     public void switchPager(int position) {
+        tv_title.setText(datas.get(position).getTitle());
         fl_content.removeAllViews();
         fl_content.addView(basePagers.get(position).rootView);
         MenuDetailBasePager menuDetailBasePager = basePagers.get(position);
