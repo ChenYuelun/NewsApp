@@ -1,6 +1,7 @@
 package com.example.newsapp.MenuDetailPager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -21,6 +22,7 @@ import com.example.myutils_library.Utils.CacheUtils;
 import com.example.myutils_library.Utils.ConstantUtils;
 import com.example.myutils_library.Utils.DensityUtil;
 import com.example.newsapp.R;
+import com.example.newsapp.acitivyty.TabNewsDetailActivity;
 import com.example.newsapp.base.MenuDetailBasePager;
 import com.example.newsapp.domain.NewsControlBean;
 import com.example.newsapp.domain.NewsDetailBean;
@@ -139,6 +141,10 @@ public class TabDetaiPager extends MenuDetailBasePager {
                     CacheUtils.putStringData(context,READ_ID_LIST,idArray);
                     tabNewsListAdapter.notifyDataSetChanged();
                 }
+
+                Intent intent = new Intent(context, TabNewsDetailActivity.class);
+                intent.putExtra("url",ConstantUtils.BASE_URL+newsBean.getUrl());
+                context.startActivity(intent);
             }
         });
         return view;
