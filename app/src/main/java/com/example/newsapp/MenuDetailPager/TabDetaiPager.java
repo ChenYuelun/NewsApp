@@ -1,12 +1,14 @@
 package com.example.newsapp.MenuDetailPager;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.myutils_library.Utils.CacheUtils;
 import com.example.myutils_library.Utils.ConstantUtils;
 import com.example.myutils_library.Utils.DensityUtil;
 import com.example.newsapp.R;
@@ -40,6 +43,7 @@ import okhttp3.Call;
  */
 
 public class TabDetaiPager extends MenuDetailBasePager {
+    public static final String READ_ID_LIST = "read_id_list";
     HorizontalScrollViewPager viewpagerTopNews;
     TextView topNewsTitle;
     LinearLayout llPointgroup;
@@ -120,6 +124,21 @@ public class TabDetaiPager extends MenuDetailBasePager {
                     moreUrl = null;
                 }
 
+            }
+        });
+        
+        
+        listviewTabDetail.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String idArray = CacheUtils.getStringData(context, READ_ID_LIST);
+                int realPosition = position -2;
+                NewsDetailBean.DataBean.NewsBean newsBean = newsBeanList.get(realPosition);
+                if(!idArray.contains(newsBean.getId()+"")) {
+                    idArray = idArray + newsBean.getId();
+                    CacheUtils.putStringData(context,READ_ID_LIST,idArray);
+                    tabNewsListAdapter.notifyDataSetChanged();
+                }
             }
         });
         return view;
@@ -272,6 +291,13 @@ public class TabDetaiPager extends MenuDetailBasePager {
             viewHolder.newsTime.setText(newsBean.getPubdate());
             String imageUrl = ConstantUtils.BASE_URL + newsBean.getListimage();
             Glide.with(context).load(imageUrl).apply(myOptions).into(viewHolder.ivPicture);
+
+            String idArray = CacheUtils.getStringData(context, READ_ID_LIST);
+            if(idArray.contains(newsBean.getId()+"")) {
+                viewHolder.newsTitle.setTextColor(Color.GRAY);
+            }else {
+                viewHolder.newsTitle.setTextColor(Color.BLACK);
+            }
             return convertView;
         }
 
