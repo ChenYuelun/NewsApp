@@ -3,10 +3,13 @@ package com.example.newsapp.MenuDetailPager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -82,18 +85,6 @@ public class TabDetaiPager extends MenuDetailBasePager {
         viewpagerTopNews.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                String title = topnews.get(position).getTitle();
-                topNewsTitle.setText(title);
-
-                llPointgroup.getChildAt(prePosition).setEnabled(false);
-
-                llPointgroup.getChildAt(position).setEnabled(true);
-
-                prePosition = position;
-            }
-
-            @Override
-            public void onPageSelected(int position) {
 //                String title = topnews.get(position).getTitle();
 //                topNewsTitle.setText(title);
 //
@@ -102,11 +93,33 @@ public class TabDetaiPager extends MenuDetailBasePager {
 //                llPointgroup.getChildAt(position).setEnabled(true);
 //
 //                prePosition = position;
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                String title = topnews.get(position).getTitle();
+                topNewsTitle.setText(title);
+
+                llPointgroup.getChildAt(prePosition).setEnabled(false);
+
+                llPointgroup.getChildAt(position).setEnabled(true);
+
+                prePosition = position;
 
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
+                switch (state) {
+                    case ViewPager.SCROLL_STATE_DRAGGING :
+                        handler.removeCallbacksAndMessages(null);
+                        break;
+                    case ViewPager.SCROLL_STATE_IDLE:
+                        handler.removeCallbacksAndMessages(null);
+                        handler.postDelayed(new MyRunnable(),4000);
+
+                        break;
+                }
 
             }
         });
@@ -159,6 +172,23 @@ public class TabDetaiPager extends MenuDetailBasePager {
 
 
     }
+    private InternalHandler handler;
+    class InternalHandler extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int item = (viewpagerTopNews.getCurrentItem()+1)%topnews.size();
+            viewpagerTopNews.setCurrentItem(item);
+            handler.postDelayed(new MyRunnable(),4000);
+        }
+    }
+
+    class MyRunnable implements Runnable{
+        @Override
+        public void run() {
+            handler.sendEmptyMessage(0);
+        }
+    }
 
     private void getDataFromNet(String url) {
         OkHttpUtils
@@ -195,6 +225,8 @@ public class TabDetaiPager extends MenuDetailBasePager {
             topnews = newsDetailBean.getData().getTopnews();
             newsBeanList = newsDetailBean.getData().getNews();
             viewpagerTopNews.setAdapter(new TopNewsPagerAdapter());
+
+
             topNewsTitle.setText(topnews.get(prePosition).getTitle());
             llPointgroup.removeAllViews();
             for (int i = 0; i < topnews.size(); i++) {
@@ -227,11 +259,17 @@ public class TabDetaiPager extends MenuDetailBasePager {
             tabNewsListAdapter = new TabNewsListAdapter();
             listviewTabDetail.setAdapter(tabNewsListAdapter);
 
+
+
         }else {
             newsBeanList.addAll(newsDetailBean.getData().getNews());
             tabNewsListAdapter.notifyDataSetChanged();
         }
 
+        if(handler == null) {
+            handler = new InternalHandler();
+            handler.postDelayed(new MyRunnable(),4000);
+        }
 
 
     }
@@ -262,6 +300,21 @@ public class TabDetaiPager extends MenuDetailBasePager {
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             container.addView(imageView);
             Glide.with(context).load(imageUrl).apply(myOptions).into(imageView);
+
+            imageView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN :
+                            handler.removeCallbacksAndMessages(null);
+                            break;
+                        case MotionEvent.ACTION_UP :
+                            handler.postDelayed(new MyRunnable(),4000);
+                            break;
+                    }
+                    return true;
+                }
+            });
             return imageView;
         }
     }
