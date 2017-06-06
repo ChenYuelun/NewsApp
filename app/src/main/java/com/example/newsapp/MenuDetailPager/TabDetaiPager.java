@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.myutils_library.Utils.ConstantUtils;
+import com.example.myutils_library.Utils.DensityUtil;
 import com.example.newsapp.R;
-import com.example.newsapp.Utils.ConstantUtils;
-import com.example.newsapp.Utils.DensityUtil;
 import com.example.newsapp.base.MenuDetailBasePager;
 import com.example.newsapp.domain.NewsControlBean;
 import com.example.newsapp.domain.NewsDetailBean;

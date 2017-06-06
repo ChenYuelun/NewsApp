@@ -4,8 +4,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.myutils_library.Utils.DensityUtil;
 import com.example.newsapp.R;
-import com.example.newsapp.Utils.DensityUtil;
 import com.example.newsapp.fragment.ContentFragment;
 import com.example.newsapp.fragment.LeftMenuFragment;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;

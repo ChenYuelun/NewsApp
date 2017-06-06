@@ -1,8 +1,7 @@
-package com.example.newsapp.Utils;
+package com.example.myutils_library.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.view.animation.Animation;
 
 /**
  * Created by chenyuelun on 2017/6/2.

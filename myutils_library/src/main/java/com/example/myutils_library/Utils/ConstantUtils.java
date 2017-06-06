@@ -1,4 +1,4 @@
-package com.example.newsapp.Utils;
+package com.example.myutils_library.Utils;
 
 /**
  * Created by chenyuelun on 2017/6/4.

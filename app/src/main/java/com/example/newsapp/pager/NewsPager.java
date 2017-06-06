@@ -9,13 +9,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.myutils_library.Utils.CacheUtils;
+import com.example.myutils_library.Utils.ConstantUtils;
 import com.example.newsapp.MenuDetailPager.InteractDetailPager;
 import com.example.newsapp.MenuDetailPager.NewsDetailPager;
 import com.example.newsapp.MenuDetailPager.PictureDetailPager;
 import com.example.newsapp.MenuDetailPager.TopicDetailPager;
 import com.example.newsapp.MenuDetailPager.VoteDetailPager;
-import com.example.newsapp.Utils.CacheUtils;
-import com.example.newsapp.Utils.ConstantUtils;
 import com.example.newsapp.acitivyty.MainActivity;
 import com.example.newsapp.base.BasePager;
 import com.example.newsapp.base.MenuDetailBasePager;

@@ -1,4 +1,4 @@
-package com.example.newsapp.Utils;
+package com.example.myutils_library.Utils;
 
 import android.content.Context;
 

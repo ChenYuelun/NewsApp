@@ -13,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.example.myutils_library.Utils.CacheUtils;
+import com.example.myutils_library.Utils.DensityUtil;
 import com.example.newsapp.R;
-import com.example.newsapp.Utils.CacheUtils;
-import com.example.newsapp.Utils.DensityUtil;
 
 import java.util.ArrayList;
 

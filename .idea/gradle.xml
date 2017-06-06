@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/ViewPagerIndicator_library" />
             <option value="$PROJECT_DIR$/ViewPagerIndicator_sample" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/myutils_library" />
             <option value="$PROJECT_DIR$/pullToRefreshListFragment" />
             <option value="$PROJECT_DIR$/pullToRefreshViewPager" />
           </set>
