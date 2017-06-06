@@ -57,7 +57,7 @@ public class TabDetaiPager extends MenuDetailBasePager {
     PullToRefreshListView pullRefreshList;
     private NewsControlBean.DataBean.ChildrenBean childrenBean;
     private List<NewsDetailBean.DataBean.TopnewsBean> topnews;
-    private RequestOptions myOptions = new RequestOptions().centerCrop().placeholder(R.drawable.news_pic_default).error(R.drawable.news_pic_default);
+    public static RequestOptions myOptions = new RequestOptions().centerCrop().placeholder(R.drawable.news_pic_default).error(R.drawable.news_pic_default);
     private int prePosition;
     private List<NewsDetailBean.DataBean.NewsBean> newsBeanList;
     private String url;
