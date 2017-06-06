@@ -25,6 +25,7 @@ import com.example.newsapp.view.HorizontalScrollViewPager;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.extras.SoundPullEventListener;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -186,6 +187,16 @@ public class TabDetaiPager extends MenuDetailBasePager {
 
                 llPointgroup.addView(point);
             }
+
+
+            /**
+             * Add Sound Event Listener
+             */
+            SoundPullEventListener<ListView> soundListener = new SoundPullEventListener<ListView>(context);
+            soundListener.addSoundEvent(PullToRefreshBase.State.PULL_TO_REFRESH, R.raw.pull_event);
+            soundListener.addSoundEvent(PullToRefreshBase.State.RESET, R.raw.reset_sound);
+            soundListener.addSoundEvent(PullToRefreshBase.State.REFRESHING, R.raw.refreshing_sound);
+            pullRefreshList.setOnPullEventListener(soundListener);
 
             //listView数据适配
             tabNewsListAdapter = new TabNewsListAdapter();
