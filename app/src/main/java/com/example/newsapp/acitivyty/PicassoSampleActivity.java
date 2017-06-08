@@ -1,5 +1,6 @@
 package com.example.newsapp.acitivyty;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -15,11 +16,10 @@ public class PicassoSampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple);
 
-        PhotoView photoView = (PhotoView) findViewById(R.id.iv_photo);
-
-        String imageUrl = getIntent().getStringExtra("imageUrl");
+        final PhotoView photoView = (PhotoView) findViewById(R.id.iv_photo);
+        Uri uri = getIntent().getData();
         Picasso.with(this)
-                .load(imageUrl)
+                .load(uri)
                 .into(photoView);
     }
 }
