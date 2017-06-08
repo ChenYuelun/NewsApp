@@ -2,6 +2,7 @@ package com.example.newsapp.pager;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.nfc.Tag;
 import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
 import android.util.Log;
@@ -61,20 +62,22 @@ public class NewsPager extends BasePager {
         ib_menu.setVisibility(View.VISIBLE);
         tv_title.setText("新闻");
         String stringData = CacheUtils.getStringData(context, ConstantUtils.NEWSCENTER_PAGER_URL);
-        if(!TextUtils.isEmpty(stringData)) {
-           processData(stringData);
+        if (!TextUtils.isEmpty(stringData)) {
+            processData(stringData);
+            Log.e("TAG","从本地获取网络缓存");
+        } else {
+            getDataFromNet();
+            Log.e("TAG","联网请求数据");
         }
 
-
-        getDataFromNet();
 
     }
 
     private void initMenuDetailPagers() {
         basePagers = new ArrayList<>();
-        basePagers.add(new NewsDetailPager(context,datas.get(0).getChildren()));
-        basePagers.add(new TopicDetailPager(context,datas.get(0).getChildren()));
-        basePagers.add(new PictureDetailPager(context,datas.get(2)));
+        basePagers.add(new NewsDetailPager(context, datas.get(0).getChildren()));
+        basePagers.add(new TopicDetailPager(context, datas.get(0).getChildren()));
+        basePagers.add(new PictureDetailPager(context, datas.get(2)));
         basePagers.add(new InteractDetailPager(context));
         basePagers.add(new VoteDetailPager(context));
     }
@@ -96,7 +99,7 @@ public class NewsPager extends BasePager {
                     public void onResponse(String response, int id) {
                         Log.e("TAG", "请求成功==" + response);
                         processData(response);
-                        CacheUtils.putStringData(context,ConstantUtils.NEWSCENTER_PAGER_URL,response);
+                        CacheUtils.putStringData(context, ConstantUtils.NEWSCENTER_PAGER_URL, response);
                     }
 
 
@@ -119,7 +122,7 @@ public class NewsPager extends BasePager {
         try {
             JSONObject jsonObject = new JSONObject(json);
             int retcode = jsonObject.optInt("retcode");
-            Log.e("TAG","retcode:"+retcode);
+            Log.e("TAG", "retcode:" + retcode);
             newsControlBean.setRetcode(retcode);
             JSONArray data = jsonObject.optJSONArray("data");
             if (data != null) {
@@ -139,7 +142,7 @@ public class NewsPager extends BasePager {
                         List<NewsControlBean.DataBean.ChildrenBean> childrenBeanList = new ArrayList<>();
                         dataBean.setChildren(childrenBeanList);
                         NewsControlBean.DataBean.ChildrenBean childrenBean = new NewsControlBean.DataBean.ChildrenBean();
-                        for(int j = 0; j < children.length(); j++) {
+                        for (int j = 0; j < children.length(); j++) {
                             JSONObject jsonObject2 = (JSONObject) children.get(j);
                             childrenBean.setId(jsonObject2.optInt("id"));
                             childrenBean.setTitle(jsonObject2.optString("title"));
@@ -168,7 +171,7 @@ public class NewsPager extends BasePager {
         fl_content.addView(basePagers.get(position).rootView);
         MenuDetailBasePager menuDetailBasePager = basePagers.get(position);
         menuDetailBasePager.initData();
-        if(position == 2) {
+        if (position == 2) {
             ib_switch_list_grid.setVisibility(View.VISIBLE);
             ib_switch_list_grid.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -178,7 +181,7 @@ public class NewsPager extends BasePager {
                 }
             });
 
-        }else {
+        } else {
             ib_switch_list_grid.setVisibility(View.GONE);
         }
     }
