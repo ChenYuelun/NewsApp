@@ -103,7 +103,7 @@ public class PictureDetailPager extends MenuDetailBasePager {
                 isFirstGet = false;
                 pbPicture.setVisibility(View.GONE);
                 newsBeanList = pictureNewsBean.getData().getNews();
-                adapter = new MyRecyclerViewAdapter(context, newsBeanList);
+                adapter = new MyRecyclerViewAdapter(context, newsBeanList,recyclerView);
                 recyclerView.setAdapter(adapter);
                 layoutManger = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(layoutManger);
