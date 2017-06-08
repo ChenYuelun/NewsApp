@@ -17,8 +17,10 @@
             <option value="$PROJECT_DIR$/ViewPagerIndicator_sample" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/myutils_library" />
+            <option value="$PROJECT_DIR$/photoview" />
             <option value="$PROJECT_DIR$/pullToRefreshListFragment" />
             <option value="$PROJECT_DIR$/pullToRefreshViewPager" />
+            <option value="$PROJECT_DIR$/sample" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -1,4 +1,4 @@
-include ':app', ':myutils_library', ':AndroidAndJs'
+include ':app', ':myutils_library', ':AndroidAndJs', ':sample', ':photoview'
 include ':SlidingMenu_library'
 include ':ViewPagerIndicator_library'
 include ':ViewPagerIndicator_sample'

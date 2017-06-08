@@ -1,6 +1,7 @@
 package com.example.newsapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.example.myutils_library.Utils.ConstantUtils;
 import com.example.newsapp.MenuDetailPager.TabDetaiPager;
 import com.example.newsapp.R;
+import com.example.newsapp.acitivyty.PicassoSampleActivity;
 import com.example.newsapp.domain.PictureNewsBean;
 
 import java.util.List;
@@ -58,6 +60,15 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         public MyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String iamageUrl = ConstantUtils.BASE_URL + newsBeanList.get(getLayoutPosition()).getLargeimage();
+                    Intent intent = new Intent(context, PicassoSampleActivity.class);
+                    intent.putExtra("imageUrl",iamageUrl);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

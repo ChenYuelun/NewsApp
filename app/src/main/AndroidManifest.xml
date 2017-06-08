@@ -23,6 +23,7 @@
             android:theme="@style/Theme.PageIndicatorDefaults" />
         <activity android:name=".acitivyty.GuideActivity" />
         <activity android:name=".acitivyty.TabNewsDetailActivity"></activity>
+        <activity android:name=".acitivyty.PicassoSampleActivity"/>
     </application>
 
 </manifest>
